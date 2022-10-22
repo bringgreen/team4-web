@@ -43,7 +43,7 @@
             <div class="container">
               <div class="carousel-caption text-start">
                 <h1>CI / CD 성공 합시다 -- IT 전문 교육기관</h1>
-                <p>정규 교육과정, 국비지원 과정, 기업 교육</p>
+                <p>잘 복원되었는지 확인해보겠어요</p>
               </div>
             </div>
           </div>
