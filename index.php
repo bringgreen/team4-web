@@ -42,7 +42,7 @@
             <img src="/img/main1.jpg" class="d-block w-100" alt="main01">
             <div class="container">
               <div class="carousel-caption text-start">
-                <h1>CI / CD 성공 합시다 -- IT 전문 교육기관</h1>
+                <h1>CI / CD 는 당연히 성공 하였어요 -- IT 전문 교육기관</h1>
                 <p>잘 복원되었는지 확인해보겠어요</p>
               </div>
             </div>
