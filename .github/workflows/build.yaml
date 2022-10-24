@@ -12,9 +12,6 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      - name: Check Node v
-        run: node -v
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -26,7 +23,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Get image tag(verion)
+      - name: Get image tag(version)
         id: image
         run: |
           VERSION=$(echo ${{ github.sha }} | cut -c1-8)
@@ -44,7 +41,6 @@ jobs:
           echo "::set-output name=image_tag::$IMAGE_TAG"
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
 
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
@@ -73,33 +69,3 @@ jobs:
           git config --global user.name "github-actions"
           git commit -am "Update image tag"
           git push -u origin main
-
-
-      - name: Setup Kustomize
-        uses: imranismail/setup-kustomize@v1
-
-      - name: Checkout kustomize repository
-        uses: actions/checkout@v2
-        with:
-          repository: bringgreen/team4-manifest
-          ref: main
-          token: ${{ secrets.ACTION_TOKEN }}
-          path: team4-manifest
-
-      - name: Update Kubernetes resources
-        run: |
-          echo ${{ steps.login-ecr.outputs.registry }}
-          echo ${{ steps.image-info.outputs.ecr_repository }}
-          echo ${{ steps.image-info.outputs.image_tag }}
-          cd team4-manifest/overlays/dev/
-          kustomize edit set image ${{ steps.login-ecr.outputs.registry}}/${{ steps.image-info.outputs.ecr_repository }}=${{ steps.login-ecr.outputs.registry}}/${{ steps.image-info.outputs.ecr_repository }}:${{ steps.image-info.outputs.image_tag }}
-          cat kustomization.yaml
-
-      - name: Commit files
-        run: |
-          cd team4-manifest
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "github-actions"
-          git commit -am "update image tag"
-          git push -u origin main
-
